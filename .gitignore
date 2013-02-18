@@ -1,4 +1,7 @@
+# Compiled and hidden files #
+target/
 *.class
+.*
 
 # Package Files #
 *.jar
