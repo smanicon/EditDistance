@@ -87,7 +87,7 @@ public class LevenshteinArray {
      *
      * @param x the x coordinate of the array.
      * @param y the y coordinate of the array.
-     * @param isSame
+     * @param isSame test the char values
      */
     public void calculateCellValue(int x, int y, boolean isSame) {
         int insertion    = this.getCellValue(x-1, y) + 1;
@@ -95,6 +95,41 @@ public class LevenshteinArray {
         int substitution = this.getCellValue(x-1, y-1) + (isSame ? 0 : 1);
 
         this.setCellValue(x, y, Math.min(insertion, Math.min(suppression, substitution)));
+    }
+
+    /**
+     * Calculate the distance between two words. Take care, if the length of a word is greater
+     * than the array size, an exception will thrown.
+     *
+     * @param str1  the first string to compare, applied on the width array.
+     * @param str2  the first string to compare, applied on the height array.
+     * @return  get the value of the distance between the two words.
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public int getDistanceOf(String str1, String str2) throws ArrayIndexOutOfBoundsException{
+        if(str1.length() > this.getWidth() || str2.length() > this.getHeight()) {
+            boolean isStr1TooLong = str1.length() > this.getWidth();
+
+            throw new ArrayIndexOutOfBoundsException("The String '" + (isStr1TooLong ? str1 : str2) + "'" +
+                    " length is out of boundary of the " + (isStr1TooLong ? "width" : "height") + " value : " +
+                    (isStr1TooLong ? this.getWidth() : this.getHeight()));
+        }
+
+        if(str1.isEmpty() || str2.isEmpty()) {
+            return Math.max(str1.length(), str2.length());
+        }
+
+        return this.applyAlgorithmOnString(str1, str2);
+    }
+
+    private int applyAlgorithmOnString(String str1, String str2) {
+        for (int x=0; x<str1.length(); x++) {
+            for (int y=0; y<str2.length(); y++) {
+                this.calculateCellValue(x, y, str1.charAt(x), str2.charAt(y));
+            }
+        }
+
+        return this.getCellValue(str1.length() - 1, str2.length() - 1);
     }
 
 }
