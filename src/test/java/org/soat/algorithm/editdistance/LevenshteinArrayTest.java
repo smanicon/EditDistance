@@ -9,4 +9,12 @@ import org.junit.Test;
  */
 public class LevenshteinArrayTest {
 
+    @Test
+    public void testMarginValue() {
+        LevenshteinArray la = new LevenshteinArray(10, 10);
+
+        assertThat(la.getCellValue(-1, -1)).isEqualTo(0);
+        assertThat(la.getCellValue(-1,  9)).isEqualTo(10);
+        assertThat(la.getCellValue( 9, -1)).isEqualTo(10);
+    }
 }
